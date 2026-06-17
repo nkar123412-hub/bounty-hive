@@ -72,7 +72,14 @@ contract BountyFactory with Ownable {
         self.bountyCount = self.bountyCount + 1;
     }
 
-    // ─── Getters ─────────────────────────────────────────────────────────────
+    // ─── Admin ────────────────────────────────────────────────────────────────
+    
+    receive(msg: SetPlatformFee) {
+        require(self.owner == sender(), "Only owner");
+        self.platformFeeBps = msg.newFee;
+    }
+
+    // ─── Getters ──────────────────────────────────────────────────────────────────
 
     get fun bountyCount(): Int { return self.bountyCount; }
     get fun platformFeeBps(): Int { return self.platformFeeBps; }

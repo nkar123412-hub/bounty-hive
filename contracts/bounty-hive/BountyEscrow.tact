@@ -170,6 +170,7 @@ contract BountyEscrow with Ownable {
     receive(msg: SelectWinners) {
         require(self.owner == sender(), "Only owner");
         require(self.winnerSelection == "manual", "Not manual selection");
+        require(msg.count <= self.winnerCount, "Too many winners");
         require(self.status == "review", "Not in review");
 
         // Count selected winners
