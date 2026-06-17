@@ -275,23 +275,18 @@ contract BountyEscrow with Ownable {
         let selected: map<Int, Bool> = emptyMap();
         let winnerIdx: Int = 0;
 
-        repeat (actualWinners) {
+        while (winnerIdx < actualWinners) {
             let randIdx = random(0, approvedCount);
             let subId = approvedIds.get(randIdx)!!;
             let sub = self.submissions.get(subId)!!;
-
-            // Avoid duplicates (slot not yet taken)
             if (selected.get(randIdx) == null) {
                 selected.set(randIdx, true);
-
                 self.winners.set(winnerIdx, sub.submitter);
-
                 send(SendParameters {
                     to: sub.submitter,
                     value: payoutPerWinner,
                     mode: SendPayGasSeparately + SendIgnoreErrors,
                 });
-
                 winnerIdx = winnerIdx + 1;
             }
         }
