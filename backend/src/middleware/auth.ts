@@ -51,14 +51,6 @@ export async function telegramAuth(req: Request, res: Response, next: NextFuncti
   }
 
   // Chrome / browser users: TON wallet address as identity
-  if (!initData && tonAddress) {
-    const user = await prisma.user.upsert({
-      where: { tonAddress },
-      update: {},
-      create: { tonAddress, displayName: tonAddress.slice(0, 8) + '...' },
-    });
-    req.user = { id: user.id, telegramId: user.telegramId ?? '', username: user.username ?? undefined, displayName: user.displayName ?? undefined };
-    return next();
   }
 
   if (!initData) {
